@@ -6,21 +6,22 @@ This reference guides the layout and code structure of a new project's foundatio
 
 ## 1. Directory Structure
 
-Generate these directories inside `lib/`:
+Generate directories inside `lib/` strictly matching user selections in Step 1:
 
 ```
 lib/
 ├── core/
-│   ├── common/         # Gap widget
+│   ├── common/         # Dual-directional Gap widget
 │   ├── di/             # GetIt locator, AppInitializer
 │   ├── errors/         # Failure types, Result<S, F>
-│   ├── extensions/     # context_extensions.dart (keyboard, safe area, routing)
-│   ├── network/        # Dio config, ApiService
+│   ├── extensions/     # Modular extensions (keyboard, navigation, media_query, barrel)
+│   ├── network/        # (Conditional: Created ONLY if Dio, http, or REST client is selected)
 │   ├── routing/        # AppRouter, Routes constants
-│   ├── services/       # StorageService interface + implementation
-│   └── theme/          # Color, spacing, typography tokens, ThemeCubit (if Light+Dark requested)
+│   ├── services/       # (Conditional: Created ONLY if SharedPreferences/SecureStorage/Hive is selected)
+│   ├── theme/          # Color, spacing, typography tokens (ThemeCubit created ONLY if dual-theme selected)
+│   └── utils/          # AppLogger (ALWAYS), AppBlocObserver (if Bloc/Cubit selected)
 ├── features/           # Empty feature directory
-└── main.dart           # DI initialization & runApp (MyApp with DevicePreview wrapper)
+└── main.dart           # DI initialization & runApp ({PascalCaseProjectName}App with DevicePreview)
 ```
 
 *Note: Do NOT generate `test/` folder or `AI_RULES.md` in project root.*
@@ -31,10 +32,11 @@ lib/
 
 ### 2.1 Main Application Setup (`main.dart`)
 Configures `MaterialApp` with:
+- Dynamic root widget naming `{PascalCaseProjectName}App` derived from project name (never hardcode `MyApp`).
 - `device_preview` enabled conditionally (`kIsWeb && kDebugMode`).
 - Global keyboard unfocus wrapper (`builder`).
-- Arabic / RTL localization support (`flutter_localizations`).
-- `ThemeCubit` integration for Light/Dark theme switching if selected.
+- Smart localization support matching user choice (Arabic/RTL, English, or Multi-Language via official Flutter localization delegates).
+- Conditional theme integration (`theme: AppTheme.lightTheme`, omitting `darkTheme` if Light Theme Only was chosen).
 
 ```dart
 import 'package:flutter/foundation.dart';
@@ -51,25 +53,25 @@ void main() async {
   runApp(
     kIsWeb && kDebugMode
         ? DevicePreview(
-            builder: (context) => const MyApp(),
+            builder: (context) => const {PascalCaseProjectName}App(),
           )
-        : const MyApp(),
+        : const {PascalCaseProjectName}App(),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class {PascalCaseProjectName}App extends StatelessWidget {
+  const {PascalCaseProjectName}App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'App Title',
+      title: '{App Display Title}',
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      // Omit darkTheme & themeMode if user chose Light Theme Only
       initialRoute: Routes.initial,
       onGenerateRoute: AppRouter.onGenerateRoute,
+      // Configured based on user language choice (ar, en, or multi-language delegates)
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -86,7 +88,7 @@ class MyApp extends StatelessWidget {
             ? DevicePreview.appBuilder(context, child)
             : child;
         return GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          onTap: () => context.dismissKeyboard(),
           child: previewChild ?? const SizedBox.shrink(),
         );
       },
@@ -97,10 +99,22 @@ class MyApp extends StatelessWidget {
 
 ---
 
-### 2.2 Theme Management & ThemeCubit (`core/theme/theme_cubit.dart`)
-Generated when user requests Light + Dark theme toggle support:
+### 2.2 Modular Theme Architecture (`core/theme/`)
+
+#### 1. Single Theme Architecture (Light Theme Only):
+- `app_colors.dart`: Color palette tokens (`AppColors.primary`, `AppColors.surface`, `AppColors.grey`).
+- `app_text_styles.dart`: Typography tokens (`AppTextStyles.font18Bold`, `AppTextStyles.font14Regular`).
+- `app_theme.dart`: Composes `AppTheme.lightTheme` using `AppColors` and `AppTextStyles`.
+
+#### 2. Dual Theme Architecture (Light + Dark Theme):
+- `app_colors.dart`: Light and Dark color palettes (`AppColors.lightPrimary`, `AppColors.darkPrimary`).
+- `app_text_styles.dart`: Adaptive typography tokens.
+- `app_theme_extension.dart`: Custom `ThemeExtension<AppThemeExtension>` for dynamic color and asset resolution.
+- `theme_cubit.dart`: `ThemeCubit` for dynamic theme toggling and mode persistence.
+- `app_theme.dart`: Composes both `AppTheme.lightTheme` and `AppTheme.darkTheme`.
 
 ```dart
+// core/theme/theme_cubit.dart (Generated when Dual Theme is selected)
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -129,6 +143,14 @@ class Gap extends StatelessWidget {
     this.vertical = 0,
     this.horizontal = 0,
   });
+
+  const Gap.v(double size, {super.key})
+      : vertical = size,
+        horizontal = 0;
+
+  const Gap.h(double size, {super.key})
+      : vertical = 0,
+        horizontal = size;
 
   final double vertical;
   final double horizontal;
@@ -185,41 +207,45 @@ class AppInitializer {
 
 ---
 
-### 2.6 BuildContext Extensions (`core/extensions/context_extensions.dart`)
+### 2.6 Modular BuildContext Extensions (`core/extensions/`)
+
+#### `keyboard_extensions.dart`
 ```dart
 import 'package:flutter/material.dart';
 
-extension ContextExtensions on BuildContext {
+extension KeyboardExtensions on BuildContext {
   void dismissKeyboard() {
     if (FocusScope.of(this).hasFocus) {
       FocusScope.of(this).unfocus();
     }
   }
 
-  double topSafe() {
-    final view = MediaQueryData.fromView(View.of(this));
-    return view.padding.top;
-  }
-
-  double bottomSafe() {
-    final view = MediaQueryData.fromView(View.of(this));
-    return view.padding.bottom;
-  }
-
   EdgeInsets get bottomInsetPadding {
     return EdgeInsets.only(bottom: MediaQuery.of(this).viewInsets.bottom);
   }
 
-  EdgeInsets get modalBottomKeyboard => EdgeInsets.only(
-        bottom: MediaQueryData.fromView(View.of(this)).viewInsets.bottom,
-      );
+  EdgeInsets get modalBottomKeyboard {
+    return EdgeInsets.only(
+      bottom: MediaQueryData.fromView(View.of(this)).viewInsets.bottom,
+    );
+  }
+}
+```
 
+#### `navigation_extensions.dart`
+```dart
+import 'package:flutter/material.dart';
+
+extension NavigationExtensions on BuildContext {
   Future<T?> pushNamed<T>(String routeName, {Object? arguments}) {
     return Navigator.of(this).pushNamed<T>(routeName, arguments: arguments);
   }
 
-  Future<T?> pushReplacementNamed<T, TO>(String routeName,
-      {Object? arguments, TO? result}) {
+  Future<T?> pushReplacementNamed<T, TO>(
+    String routeName, {
+    Object? arguments,
+    TO? result,
+  }) {
     return Navigator.of(this).pushReplacementNamed<T, TO>(
       routeName,
       result: result,
@@ -243,6 +269,33 @@ extension ContextExtensions on BuildContext {
     );
   }
 }
+```
+
+#### `media_query_extensions.dart`
+```dart
+import 'package:flutter/material.dart';
+
+extension MediaQueryExtensions on BuildContext {
+  double topSafe() {
+    final view = MediaQueryData.fromView(View.of(this));
+    return view.padding.top;
+  }
+
+  double bottomSafe() {
+    final view = MediaQueryData.fromView(View.of(this));
+    return view.padding.bottom;
+  }
+
+  double get screenHeight => MediaQuery.sizeOf(this).height;
+  double get screenWidth => MediaQuery.sizeOf(this).width;
+}
+```
+
+#### `context_extensions.dart` (Barrel Export)
+```dart
+export 'keyboard_extensions.dart';
+export 'media_query_extensions.dart';
+export 'navigation_extensions.dart';
 ```
 
 ---
