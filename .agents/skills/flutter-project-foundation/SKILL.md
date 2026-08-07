@@ -83,7 +83,7 @@ Show a one-line summary — e.g. _"Creating: Dio + SharedPrefs + Arabic RTL + Li
 > **MANDATORY**: Immediately after `flutter create`, delete the `test/` folder entirely (`Remove-Item -Recurse -Force test` / `rm -rf test`). No test files or test directory should remain.
 
 2. Remove boilerplate: comments, counter app, default `MyHomePage`, default `StatefulWidget` from `main.dart`.
-3. Add all required dependencies to `pubspec.yaml` (based on Step 1 answers): `flutter_localizations`, `get_it`, `logger`, `device_preview` (dev), chosen network/storage/state packages.
+3. Clean and organize `pubspec.yaml`: Strip out all default Flutter boilerplate comments. Group all dependencies into clear, minimal category sections (`# Core & Dependency Injection`, `# State Management`, `# Networking`, `# Storage`, `# UI Preview & Debugging`) as specified in [references/code-templates.md → pubspec.yaml](references/code-templates.md).
 4. Write `analysis_options.yaml` — see [references/code-templates.md → analysis_options.yaml](references/code-templates.md). Do NOT install `very_good_analysis`.
 5. Do NOT create `AI_RULES.md`.
 
@@ -104,6 +104,7 @@ Infer `{repo_name}`, `{username}`, `{Formatted+App+Name}` from git/pubspec.
 lib/
 ├── core/
 │   ├── common/         # Gap widget (ALWAYS)
+│   ├── constants/      # AppConstants (appTitle, locales, keys) (ALWAYS)
 │   ├── di/             # GetIt locator, AppInitializer (ALWAYS)
 │   ├── errors/         # Result<S, F>, Failure types (ALWAYS)
 │   ├── extensions/     # keyboard, navigation, media_query, barrel (ALWAYS)
@@ -150,7 +151,7 @@ See [references/code-templates.md → app_initializer.dart](references/code-temp
   - `success(String)` → `_logger.i('✅ SUCCESS: $message')`
   - `localError(String, {error, stackTrace})` → `_logger.e` (async)
   - `error(String, {error, stackTrace})` → delegates to `localError` (async)
-  - `reportToFirebase(String, {error, stackTrace})` → `_logger.e('🔥 TO FIREBASE: $message')` (async) — add real Crashlytics call only if Firebase was selected.
+  - `reportError(String, {error, stackTrace})` → `_logger.e('🔥 REMOTE ERROR REPORT: $message')` (async) — add real Crashlytics/Sentry/Firebase call depending on Step 1 selection.
 
 See [references/code-templates.md → app_logger.dart](references/code-templates.md) for exact code.
 
@@ -167,7 +168,7 @@ See [references/code-templates.md → app_logger.dart](references/code-templates
   - `onCreate` → `AppLogger.info('[Bloc Created] ${bloc.runtimeType}')`
   - `onEvent` → truncates event string to 200 chars, logs `[Event] Type -> truncated`
   - `onChange` → truncates next state to 200 chars, logs `[State Change] Type -> truncated`
-  - `onError` → calls `unawaited(AppLogger.reportToFirebase('[BlocError] ${bloc.runtimeType}', ...))`
+  - `onError` → calls `unawaited(AppLogger.reportError('[BlocError] ${bloc.runtimeType}', ...))`
   - `onClose` → `AppLogger.info('[Bloc Closed] ${bloc.runtimeType}')`
 
 See [references/code-templates.md → app_bloc_observer.dart](references/code-templates.md) for exact code.

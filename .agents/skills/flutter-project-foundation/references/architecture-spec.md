@@ -12,6 +12,7 @@ Generate directories inside `lib/` strictly matching user selections in Step 1:
 lib/
 ├── core/
 │   ├── common/         # Dual-directional Gap widget
+│   ├── constants/      # Global app constants (AppConstants)
 │   ├── di/             # GetIt locator, AppInitializer
 │   ├── errors/         # Failure types, Result<S, F>
 │   ├── extensions/     # Modular extensions (keyboard, navigation, media_query, barrel)

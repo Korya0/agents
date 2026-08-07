@@ -112,19 +112,19 @@ class AppLogger {
     await localError(message, error: error, stackTrace: stackTrace);
   }
 
-  static Future<void> reportToFirebase(
+  static Future<void> reportError(
     String message, {
     Object? error,
     StackTrace? stackTrace,
   }) async {
     if (kDebugMode) {
-      _logger.e('🔥 TO FIREBASE: $message', error: error, stackTrace: stackTrace);
+      _logger.e('🔥 REMOTE ERROR REPORT: $message', error: error, stackTrace: stackTrace);
     }
   }
 }
 ```
 
-> Add Crashlytics import and real `FirebaseCrashlytics.instance.recordError(...)` call inside `reportToFirebase` only if Firebase was selected in Step 1.
+> Add Crashlytics/Sentry/Firebase import and real remote logging call inside `reportError` based on backend setup selected in Step 1.
 
 ---
 
@@ -165,7 +165,7 @@ class AppBlocObserver extends BlocObserver {
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    unawaited(AppLogger.reportToFirebase(
+    unawaited(AppLogger.reportError(
       '[BlocError] ${bloc.runtimeType}',
       error: error,
       stackTrace: stackTrace,
@@ -392,6 +392,20 @@ class ThemeCubit extends Cubit<ThemeMode> {
 
 ---
 
+## lib/core/constants/app_constants.dart
+
+> ALWAYS generated. Contains global string constants like app title, locale codes, storage keys.
+
+```dart
+abstract class AppConstants {
+  static const String appTitle = '{App Display Title}';
+  static const String arLocale = 'ar';
+  static const String enLocale = 'en';
+}
+```
+
+---
+
 ## main.dart Template
 
 > Replace `{PascalCaseProjectName}` with the actual class name (e.g. `AiFoodDeliveryApp`).
@@ -402,6 +416,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:device_preview/device_preview.dart';
+import 'core/constants/app_constants.dart';
 import 'core/di/app_initializer.dart';
 import 'core/extensions/context_extensions.dart';
 import 'core/routing/app_router.dart';
@@ -426,7 +441,7 @@ class {PascalCaseProjectName}App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: '{App Display Title}',
+      title: AppConstants.appTitle,
       theme: AppTheme.lightTheme,
       // darkTheme: AppTheme.darkTheme,   // Uncomment ONLY for Dual Theme
       // themeMode: ThemeMode.light,       // Uncomment ONLY for Dual Theme
@@ -438,11 +453,11 @@ class {PascalCaseProjectName}App extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('ar'), // Adjust per user language choice
+        Locale(AppConstants.arLocale), // Adjust per user language choice
       ],
       locale: kIsWeb && kDebugMode
           ? DevicePreview.locale(context)
-          : const Locale('ar'),
+          : const Locale(AppConstants.arLocale),
       builder: (context, child) {
         final previewChild = kIsWeb && kDebugMode
             ? DevicePreview.appBuilder(context, child)
@@ -485,4 +500,50 @@ linter:
     - unnecessary_this
     - prefer_final_locals
     - omit_local_variable_types
+```
+
+---
+
+## pubspec.yaml Clean Layout & Categorized Comments
+
+> Clean default Flutter boilerplate comments from `pubspec.yaml` and group dependencies into clear, minimal categories with concise section headers.
+
+```yaml
+name: {project_name}
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Core & Dependency Injection
+  get_it: ^7.6.0
+  logger: ^2.0.2+1
+
+  # State Management (Generated per Step 1 selection)
+  flutter_bloc: ^8.1.3
+
+  # Networking (Conditional)
+  dio: ^5.4.0
+
+  # Storage (Conditional)
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+  # UI Preview & Debugging
+  device_preview: ^1.2.0
+
+flutter:
+  uses-material-design: true
 ```

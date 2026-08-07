@@ -149,7 +149,7 @@
       "source": "local",
       "sourceType": "local",
       "skillPath": "skills/flutter-project-foundation/SKILL.md",
-      "computedHash": "bafc7d58328b7bd7c103f426386bcce7c0c813636a01ff5dd99acf9df352173e"
+      "computedHash": "11d294e51c45f18995cfee0bf45810a9fb58857a5e49cdb4bc28f037de360497"
     },
     "flutter-best-practices": {
       "source": "evanca/flutter-ai-rules",
