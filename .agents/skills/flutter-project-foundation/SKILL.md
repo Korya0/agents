@@ -389,11 +389,13 @@ class {PascalCaseProjectName}App extends StatelessWidget {
 Separate design tokens into dedicated files according to responsibility:
 - `app_colors.dart`: Color palette tokens (`AppColors.primary`, `AppColors.surface`, `AppColors.grey`, etc.).
 - `app_text_styles.dart`: Typography tokens (`AppTextStyles.font18Bold`, `AppTextStyles.font14Regular`, etc.).
-- `app_theme.dart`: Composes `AppTheme.lightTheme` using `AppColors` and `AppTextStyles`.
+- `app_sizes.dart`: **Mandatory** spacing scale, border radius, icon sizes based on 4-point grid (see below).
+- `app_theme.dart`: Composes `AppTheme.lightTheme` using `AppColors`, `AppTextStyles`, and `AppSizes`.
 
 ##### 2. Dual Theme Setup (Light + Dark Theme):
 - `app_colors.dart`: Light and Dark color palettes (`AppColors.lightPrimary`, `AppColors.darkPrimary`, etc.).
 - `app_text_styles.dart`: Adaptive typography tokens.
+- `app_sizes.dart`: **Mandatory** — same 4-point spacing/radius system (see below). Shared across both themes.
 - `app_theme_extension.dart`: Custom `ThemeExtension<AppThemeExtension>` for dynamic theme colors and asset resolution.
 - `theme_cubit.dart`: `ThemeCubit` for dynamic theme toggling and mode persistence.
 - `app_theme.dart`: Composes both `AppTheme.lightTheme` and `AppTheme.darkTheme`.
@@ -413,6 +415,55 @@ class ThemeCubit extends Cubit<ThemeMode> {
   void setThemeMode(ThemeMode mode) {
     emit(mode);
   }
+}
+```
+
+##### 3. AppSizes — Mandatory Sizing Token System (`lib/core/theme/app_sizes.dart`)
+
+> [!IMPORTANT]
+> **ALWAYS GENERATED** regardless of theme choice (single or dual). This is the only source of truth for spacing, border radius, and icon sizes. NEVER use raw numeric literals (`16`, `8.0`, `BorderRadius.circular(12)`) anywhere in widget code — always reference `AppSizes`.
+
+> **No off-scale values rule** (from design-tokens best practice): If a design specifies a value that doesn't exist in the scale (e.g. 14px spacing when the scale is 4/8/12/16), **DO NOT add a special token**. Stop and report it to the user — it is almost always a mistake in the design file. Silently encoding it makes the scale meaningless.
+
+```dart
+abstract class AppSizes {
+  // ── Spacing Scale (4-point grid) ─────────────────────────
+  static const double s2 = 2;
+  static const double s4 = 4;
+  static const double s6 = 6;
+  static const double s8 = 8;
+  static const double s10 = 10;
+  static const double s12 = 12;
+  static const double s14 = 14;
+  static const double s16 = 16;
+  static const double s20 = 20;
+  static const double s24 = 24;
+  static const double s28 = 28;
+  static const double s32 = 32;
+  static const double s40 = 40;
+  static const double s48 = 48;
+  static const double s56 = 56;
+  static const double s64 = 64;
+  static const double s80 = 80;
+
+  // ── Border Radius ─────────────────────────────────────────
+  static const double radiusXs = 4;
+  static const double radiusSm = 8;
+  static const double radiusMd = 12;
+  static const double radiusLg = 16;
+  static const double radiusXl = 24;
+  static const double radiusXxl = 32;
+  static const double radiusCircle = 1000;
+
+  // ── Icon Sizes ────────────────────────────────────────────
+  static const double iconXs = 14;
+  static const double iconSm = 18;
+  static const double iconMd = 24;
+  static const double iconLg = 32;
+  static const double iconXl = 40;
+
+  // ── Minimum Touch Target (accessibility) ─────────────────
+  static const double minTouchTarget = 48;
 }
 ```
 
@@ -583,20 +634,21 @@ linter:
 
 ### Initializing App with DevicePreview & Global Unfocus Wrapper
 ```dart
-// BAD — Direct runApp without DevicePreview conditional check or global unfocus wrapper
+// BAD — Direct runApp, hardcoded MyApp name, no DevicePreview, no BlocObserver
 void main() async {
   runApp(const MaterialApp(home: HomeScreen()));
 }
 
-// GOOD — Enclosed with AppInitializer, DevicePreview for kIsWeb && kDebugMode, and global unfocus gesture detector
+// GOOD — AppInitializer wires BlocObserver, DevicePreview for kIsWeb && kDebugMode
+// Root widget named from project: ai_food_delivery -> AiFoodDeliveryApp
 void main() async {
   await AppInitializer.init();
   runApp(
     kIsWeb && kDebugMode
         ? DevicePreview(
-            builder: (context) => const MyApp(),
+            builder: (context) => const AiFoodDeliveryApp(),
           )
-        : const MyApp(),
+        : const AiFoodDeliveryApp(),
   );
 }
 ```
@@ -608,18 +660,23 @@ void main() async {
 | Pitfall | Fix |
 |---|---|
 | Assuming project details without checking | Infer parameters from `pubspec.yaml` and `git config` when available, or prompt user |
-| Omitting or deleting HTML badge shields (`<p>...</p>`) in README | ALWAYS include the full HTML shields badge block (`contributors`, `last-commit`, `stars`, `license`) in `README.md` |
-| Hardcoding typing SVG header in README | Auto-infer and title-case `{Formatted+App+Name}` from the project name/package name |
-| Generating `test/` directory | Delete `test/` folder immediately after running `flutter create` |
-| Overriding Git author with dummy name/email | Ensure git commits use authentic `git config user.name` and `git config user.email` without injecting `--author` flags |
-| Installing `very_good_analysis` package | Use standard `flutter_lints` and write the custom `analysis_options.yaml` provided |
-| Forgetting `DevicePreview` conditional wrap | Use `kIsWeb && kDebugMode` to wrap `DevicePreview` in `main.dart` and `MaterialApp` |
-| Forgetting Global Unfocus in `MaterialApp` | Always wrap `child` inside `MaterialApp.builder` with a `GestureDetector` that unfocuses `primaryFocus` |
-| Omitting `flutter_localizations` for Arabic | Include `GlobalMaterialLocalizations` and `supportedLocales: [Locale('ar')]` |
-| Creating dummy feature code (`features/home`) | Keep `features/` directory clean; only build foundation |
+| Generating network/ or services/ without asking | NEVER auto-generate — ALWAYS ask user for Network and Storage preference first |
+| Omitting or deleting HTML badge shields (`<p>...</p>`) in README | ALWAYS include the full HTML shields badge block in `README.md` |
+| Hardcoding typing SVG header in README | Auto-infer and title-case `{Formatted+App+Name}` from project name |
+| Generating `test/` directory | Delete `test/` and `widget_test.dart` immediately after `flutter create` |
+| Using `MyApp` as root widget name | ALWAYS PascalCase from project name + `App` suffix (e.g. `AiFoodDeliveryApp`) |
+| Hardcoding raw numeric values in widget code | Use `AppSizes.s16`, `AppSizes.radiusMd` — NEVER raw `16`, `EdgeInsets.all(16)`, `BorderRadius.circular(12)` |
+| Adding off-scale spacing value to `AppSizes` | STOP and report to user — almost always a design file mistake |
+| Skipping `AppLogger` | ALWAYS generate `lib/core/utils/app_logger.dart` regardless of choices |
+| Skipping `AppBlocObserver` when using Cubit | ALWAYS generate and wire via `Bloc.observer = AppBlocObserver()` in `AppInitializer` |
+| Generating `darkTheme` when user chose Light Only | Omit `darkTheme:` and `themeMode:` entirely when Light Theme Only is selected |
+| Generating Localization delegates without asking | ALWAYS ask about language strategy — Arabic/English/Multi BEFORE generating |
+| Overriding Git author with dummy name/email | Use authentic `git config user.name` and `git config user.email` without `--author` flags |
+| Installing `very_good_analysis` package | Use standard `flutter_lints` and the provided custom `analysis_options.yaml` |
+| Forgetting Global Unfocus in `MaterialApp` | Wrap `child` in `GestureDetector` calling `context.dismissKeyboard()` in `MaterialApp.builder` |
+| Creating dummy feature code (`features/home`) | Keep `features/` empty — foundation only |
 | Adding boilerplate code comments | Enforce strict no-comments policy |
-| Creating `AI_RULES.md` in root | Skip creating `AI_RULES.md` in the project root |
-| Omitting badges or using complex non-standard README | Use exact centered badge shields (`<p>...</p>`) & typing SVG README template |
+| Creating `AI_RULES.md` in root | Skip — not part of this skill's scope |
 
 ---
 
