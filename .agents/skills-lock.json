@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "skills": {
+    "accessibility": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/accessibility/SKILL.md",
+      "computedHash": "a5bbdc190fce8cdc605a17fc50f9c8df70c459c4d801c5466872b91de887e365"
+    },
+    "architecture-feature-first": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/architecture-feature-first/SKILL.md",
+      "computedHash": "20ef3e5998cac4041bc15bae344e0a69631af197fa7974fc3c5209a03ce9ca71"
+    },
+    "bloc": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/bloc/SKILL.md",
+      "computedHash": "ca697ae7f92d6f62eb6a441145bf5e3f315ba86da45a84878eb89061542dff99"
+    },
+    "code-review": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/code-review/SKILL.md",
+      "computedHash": "48e20aa756c6742deef77ddd6f6bcccec57e3643b2107bfbe792792ecc76cad4"
+    },
+    "create-skill": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": "skills/create-skill/SKILL.md",
+      "computedHash": "148cfca4544ad37df6b0fcbadb9f4ac576c7b139a5ac093501ffb65136d8b7bc"
+    },
+    "dart-3-updates": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/dart-3-updates/SKILL.md",
+      "computedHash": "dff176f423edaece59d70116b5a23adf07233188b1f7598836e98658783b5f03"
+    },
+    "developing-genkit-dart": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/developing-genkit-dart/SKILL.md",
+      "computedHash": "829806341762ff4009913ff0263fbb10cda480094cf8e326d06efc094fe1f7d1"
+    },
+    "effective-dart": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/effective-dart/SKILL.md",
+      "computedHash": "25361c81c83a33a2a524680b9ffc370916c1061fd9c01c0f88e61afda6e1a7d2"
+    },
+    "figma-to-flutter": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": "skills/figma-to-flutter/SKILL.md",
+      "computedHash": "0e3dc863322fe6064fe5e89d31d934cf78ab197b4f8136f962ce000baf59fdd2"
+    },
+    "firebase-ai": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-ai/SKILL.md",
+      "computedHash": "a1a6a2ed38805ee00ac42c009ba1247ec3f2df2e6fc817130cafeddc3f41f447"
+    },
+    "firebase-analytics": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-analytics/SKILL.md",
+      "computedHash": "93fc2edd81bbd23725c7d832a7a81974d54999e87a18b2b4bfaffa5cadee66ac"
+    },
+    "firebase-app-check": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-app-check/SKILL.md",
+      "computedHash": "6a2411450a903d277cd6edcd6698e68c50aaa9cd3710ced628f6c399ad0a5545"
+    },
+    "firebase-auth": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-auth/SKILL.md",
+      "computedHash": "4f633890d8f93409538ddad5e9ef14ab553587e1cc1cce5698d0a2299a8c443f"
+    },
+    "firebase-cloud-firestore": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-cloud-firestore/SKILL.md",
+      "computedHash": "c4b15f7dfd817c36e85029e453f26efab4ff51a28983a7d475039d3da71b96f6"
+    },
+    "firebase-cloud-functions": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-cloud-functions/SKILL.md",
+      "computedHash": "645fb8c93a5383544807f4cd7a0cfaf69cb667c06753a7aca31bbe813b59fa50"
+    },
+    "firebase-crashlytics": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-crashlytics/SKILL.md",
+      "computedHash": "4391b10788aa118db53d43d70c6b346870da27dd545320469639ade1293ac329"
+    },
+    "firebase-data-connect": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-data-connect/SKILL.md",
+      "computedHash": "30ab8f205b2198e04f56c924bcf7a47ec5c6f2ac51d48561ec5eff589b1d2023"
+    },
+    "firebase-database": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-database/SKILL.md",
+      "computedHash": "5b32433b9961aef5fecbb913f16471384bba966e17ef9cab3973ed0b3172ac9b"
+    },
+    "firebase-in-app-messaging": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-in-app-messaging/SKILL.md",
+      "computedHash": "03b239da749e84c6c27b9b34d2f3dc67c1bfb0885918024518e4f3202059e675"
+    },
+    "firebase-messaging": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-messaging/SKILL.md",
+      "computedHash": "a96929846306be6a71119a851321ed9dc5af937610ea6ec6fbcbcb7c3ea5e904"
+    },
+    "firebase-remote-config": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-remote-config/SKILL.md",
+      "computedHash": "65eb9cd3bc0d66f8584718bbe217036ca4793f60c4b6bff2cad8045c33efd5ea"
+    },
+    "firebase-storage": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-storage/SKILL.md",
+      "computedHash": "b060175e3537798efbc7b36e8466e68e8e3dcbe3314a4a3b7d7a8f0534b6d5a7"
+    },
+    "flutter-app-architecture": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-app-architecture/SKILL.md",
+      "computedHash": "c28d8d1c283f9fd878572ab2f1bfe8676c5d86dfe5a7b1234e6253e6195ed8fb"
+    },
+    "flutter-app-icons-splash": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": "skills/flutter-app-icons-splash/SKILL.md",
+      "computedHash": "af6816f2a7e82f63d4d2d940e7ed069697168fbbd4fd8b5d5a4a9dd2a8081643"
+    },
+    "flutter-project-foundation": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": "skills/flutter-project-foundation/SKILL.md",
+      "computedHash": "ed50176329edd7fd60c23201af287a7fb0d31ecbea94cf17f14c8e0432216226"
+    },
+    "flutter-best-practices": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-best-practices/SKILL.md",
+      "computedHash": "0e0106718d5b55f9e70155a6af61d91246805c363648b5796ebf33db93bc507f"
+    },
+    "flutter-change-notifier": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-change-notifier/SKILL.md",
+      "computedHash": "9ba57178c34ed36cd3abd9814b36eb8f8b83e74f009dac0319135097f40ac6e0"
+    },
+    "flutter-errors": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-errors/SKILL.md",
+      "computedHash": "db66352dcca032202dc20d04fa5f960e15cf146d0e2c2c21dd6a8050094092b0"
+    },
+    "flutter-pre-caching": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-pre-caching/SKILL.md",
+      "computedHash": "9725708600492ff15217dafded077dd0de0b6a87a2e1ce89ad2a4aeb142b251d"
+    },
+    "flutter-use-column-row-first": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-use-column-row-first/SKILL.md",
+      "computedHash": "a3ec847d4c1874d44ad6291b6f4561ecdeef4e23a785a63f8a65ed56c4b7097c"
+    },
+    "flutterfire-configure": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/flutterfire-configure/SKILL.md",
+      "computedHash": "667ea61bcf8e3d8bdf71f46a4ef85483e1139d4d6eead6f5078f1252190f6f27"
+    },
+    "inclusive-design": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/inclusive-design/SKILL.md",
+      "computedHash": "8670a9dfdfbcb9292e92e0a6d811beb1610dd21f8d0bab1fe5708bb6f77d45c5"
+    },
+    "mockito": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/mockito/SKILL.md",
+      "computedHash": "4d35796ca02e5927966a2489ef1063db636c5ead229337526845a6cca85df725"
+    },
+    "mocktail": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/mocktail/SKILL.md",
+      "computedHash": "122d010ad7def6df61bf2845482ded1a675624fb4f587cf9e7570763f9865a63"
+    },
+    "patrol-e2e-testing": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/patrol-e2e-testing/SKILL.md",
+      "computedHash": "eecc71b03826d323278ef9492a148232497803ca00481f248c45c2f7dccf033e"
+    },
+    "provider": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/provider/SKILL.md",
+      "computedHash": "b54981c7d06289b65beb12da26b25f67600109d95c14cef04ce9ff3282d24689"
+    },
+    "revenuecat-testing": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/revenuecat-testing/SKILL.md",
+      "computedHash": "068b1cb87d4e174bc7865872c4d92a78805c63bd1965acfe964716f3c8c5d9dc"
+    },
+    "riverpod": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/riverpod/SKILL.md",
+      "computedHash": "3420e1430fdfd1d6ef2fdf1885df6e03478e7f0640f87ba4b6c965f10cd1da14"
+    },
+    "store-listing-assets": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/store-listing-assets/SKILL.md",
+      "computedHash": "c78444650b3c23408c7dcccb4b7e8207c2af0d71b494a76bfcadb6f63996c766"
+    },
+    "testing": {
+      "source": "evanca/flutter-ai-rules",
+      "sourceType": "github",
+      "skillPath": "skills/testing/SKILL.md",
+      "computedHash": "000ca9d950d30aa6d0b62f51b53e1d0d308d41dcbda7be96d735402892d2cbb1"
+    }
+  }
+}
