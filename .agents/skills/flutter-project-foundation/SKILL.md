@@ -285,6 +285,15 @@ Commit with `git add .` then `git commit -m "chore: initialize project foundatio
 
 ---
 
+### Step 8 — Performance Verification Recommendation
+
+Once the project is successfully set up and committed, explicitly recommend that the user executes the following command in their terminal to verify performance, startup behavior, and correctness:
+```bash
+flutter run --profile
+```
+
+---
+
 ## 3. BAD vs GOOD Code Patterns
 
 ```dart
